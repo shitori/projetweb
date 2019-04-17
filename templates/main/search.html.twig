@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des professeurs{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="mt-1 rounded bg-light" style="padding: 50px">
+            <h2>
+                Liste de tous les professeur de/d' -- à -- :
+            </h2>
+            <div class="row mt-1">
+                <div class="col-3 border-right">
+                    <h5>Prix:</h5>
+                    <div id="slider-container"></div>
+                    <p>
+                        <label for="amount">Prix de l'heure:</label><br>
+                        <input type="text" id="amount" style="color: #f6931f; font-weight: bold; width: 110px"/>
+                    </p>
+                    <div id="slider-range"></div>
+
+                    <h5>Filtre par rapport au nom:</h5>
+                    <input type="text" class="form-control filter-letter" placeholder="Filtre">
+                    <br>
+                    <h5>Niveau minimum:</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lvlRadios" id="lvlRadio1" value="1">
+                        <label class="form-check-label" for="lvlRadio1">
+                            Primaire
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lvlRadios" id="lvlRadio2" value="2">
+                        <label class="form-check-label" for="lvlRadio2">
+                            Collège
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lvlRadios" id="lvlRadio3" value="3">
+                        <label class="form-check-label" for="lvlRadio3">
+                            Lycée
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="lvlRadios" id="lvlRadio4" value="4">
+                        <label class="form-check-label" for="lvlRadio4">
+                            Supérieur
+                        </label>
+                    </div>
+                </div>
+                <div class="col-9 pl-5">
+                    <div class="row ">
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="1" >
+                                Maths - Primaire
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <p class="card-text">Disponible le : </p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="5">
+                                5 €/heure
+                            </div>
+                        </div>
+
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="2">
+                                Maths - Collège
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="10">
+                                10 €/heure
+                            </div>
+                        </div>
+
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="3">
+                                Maths - Lycée
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="25">
+                                25 €/heure
+                            </div>
+                        </div>
+
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="4">
+                                Maths - Supérieur
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/f.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="55">
+                                55 €/heure
+                            </div>
+                        </div>
+
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="3">
+                                Maths - Lycée
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="35">
+                                35 €/heure
+                            </div>
+                        </div>
+
+                        <div class="card text-center m-1" style="width: 18rem;">
+                            <div class="card-header" data-lvl="2">
+                                Maths - Collège
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                     style="width: 100px">
+                                <h5 class="card-title">Nom prénom</h5>
+                                <p class="card-text">adresse - ville</p>
+                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                            </div>
+                            <div class="card-footer text-muted system" data-price="25">
+                                25 €/heure
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

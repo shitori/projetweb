@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="mt-5 rounded bg-light" style="padding: 50px">
+            <h1 class="text-center mb-5 ">
+                Bienvenue sur nom_site <br>
+                Chercher votre professeur dès maintenant :
+            </h1>
+            <form>
+                <div class="form-row ">
+
+                    <div class="form-group input-group-lg col-md-4">
+                        <label for="inputMat">Votre matière</label>
+                        <input type="text" class="form-control" id="inputMat">
+                    </div>
+                    <div class="form-group input-group-lg col-md-5">
+                        <label for="inputCity">Votre ville</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputZip"> Votre profeseur</label>
+                        <button type="submit" class="form-control btn btn-primary btn-lg">Recherche</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row mt-5 ">
+                <div class="col-4 text-center">
+                    <img src="{{ asset('img/acc-1.png') }}" class="border rounded-circle mx-auto" style="width: 100px">
+                    <h3>Rechercher le professeur qui vous convients.</h3>
+                </div>
+                <div class="col-4 text-center border-right border-left border-info">
+                    <img src="{{ asset('img/acc-2.png') }}" class="border rounded-circle mx-auto" style="width: 100px">
+                    <h3>Résever un rendez-vous</h3>
+                </div>
+                <div class="col-4 text-center">
+                    <img src="{{ asset('img/acc-3.png') }}" class="border rounded-circle mx-auto" style="width: 100px">
+                    <h3>Améliorer vos compétences</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
