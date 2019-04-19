@@ -24,7 +24,7 @@ class Competence
     private $matiere;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\professeur", inversedBy="competences")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Professeur", inversedBy="competences")
      */
     private $prof_id;
 

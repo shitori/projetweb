@@ -34,7 +34,7 @@ class Disponibilite
     private $fin;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\professeur", inversedBy="disponibilites")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Professeur", inversedBy="disponibilites")
      */
     private $prof_id;
 

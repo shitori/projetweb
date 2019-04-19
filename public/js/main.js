@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log("je suis dans le main.js")
+    console.log("main.js OK")
     var matiere = [
         "Français",
         "Mathématiques",
@@ -18,7 +18,7 @@ $(document).ready(function () {
         "Chimie",
         "Science de l'ingénieur",
         "Philosophie",
-        "Sciences Économique",
+        "Science Économique",
     ];
 
     var ville = [

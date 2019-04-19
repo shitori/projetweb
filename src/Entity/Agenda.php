@@ -32,13 +32,13 @@ class Agenda
     private $fin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\professeur", inversedBy="agendas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Professeur", inversedBy="agendas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $prof_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="agendas")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="agendas")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user_id;
