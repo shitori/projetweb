@@ -35,17 +35,17 @@ class Professeur
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Competence", mappedBy="prof_id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Competence", mappedBy="prof")
      */
     private $competences;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Disponibilite", mappedBy="prof_id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Disponibilite", mappedBy="prof")
      */
     private $disponibilites;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Agenda", mappedBy="prof_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Agenda", mappedBy="prof")
      */
     private $agendas;
 
@@ -85,12 +85,12 @@ class Professeur
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(user $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

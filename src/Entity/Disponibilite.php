@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,16 +37,12 @@ class Disponibilite
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Professeur", inversedBy="disponibilites")
      */
-    private $prof_id;
+    private $prof;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $type;
 
     public function __construct()
     {
-        $this->prof_id = new ArrayCollection();
+        $this->prof = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,24 +62,24 @@ class Disponibilite
         return $this;
     }
 
-    public function getDebut(): ?\DateTimeInterface
+    public function getDebut(): ?DateTimeInterface
     {
         return $this->debut;
     }
 
-    public function setDebut(\DateTimeInterface $debut): self
+    public function setDebut(DateTimeInterface $debut): self
     {
         $this->debut = $debut;
 
         return $this;
     }
 
-    public function getFin(): ?\DateTimeInterface
+    public function getFin(): ?DateTimeInterface
     {
         return $this->fin;
     }
 
-    public function setFin(\DateTimeInterface $fin): self
+    public function setFin(DateTimeInterface $fin): self
     {
         $this->fin = $fin;
 
@@ -94,36 +91,25 @@ class Disponibilite
      */
     public function getProfId(): Collection
     {
-        return $this->prof_id;
+        return $this->prof;
     }
 
-    public function addProfId(professeur $profId): self
+    public function addProfId(Professeur $profId): self
     {
-        if (!$this->prof_id->contains($profId)) {
-            $this->prof_id[] = $profId;
+        if (!$this->prof->contains($profId)) {
+            $this->prof[] = $profId;
         }
 
         return $this;
     }
 
-    public function removeProfId(professeur $profId): self
+    public function removeProfId(Professeur $profId): self
     {
-        if ($this->prof_id->contains($profId)) {
-            $this->prof_id->removeElement($profId);
+        if ($this->prof->contains($profId)) {
+            $this->prof->removeElement($profId);
         }
 
         return $this;
     }
 
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 }

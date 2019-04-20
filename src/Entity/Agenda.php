@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,18 +36,14 @@ class Agenda
      * @ORM\ManyToOne(targetEntity="App\Entity\Professeur", inversedBy="agendas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $prof_id;
+    private $prof;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="agendas")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $type;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -75,62 +72,50 @@ class Agenda
         return $this;
     }
 
-    public function getDebut(): ?\DateTimeInterface
+    public function getDebut(): ?DateTimeInterface
     {
         return $this->debut;
     }
 
-    public function setDebut(\DateTimeInterface $debut): self
+    public function setDebut(DateTimeInterface $debut): self
     {
         $this->debut = $debut;
 
         return $this;
     }
 
-    public function getFin(): ?\DateTimeInterface
+    public function getFin(): ?DateTimeInterface
     {
         return $this->fin;
     }
 
-    public function setFin(\DateTimeInterface $fin): self
+    public function setFin(DateTimeInterface $fin): self
     {
         $this->fin = $fin;
 
         return $this;
     }
 
-    public function getProfId(): ?professeur
+    public function getProfId(): ?Professeur
     {
-        return $this->prof_id;
+        return $this->prof;
     }
 
-    public function setProfId(?professeur $prof_id): self
+    public function setProfId(?Professeur $prof): self
     {
-        $this->prof_id = $prof_id;
+        $this->prof = $prof;
 
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?user $user_id): self
+    public function setUserId(?User $user): self
     {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    public function setType(int $type): self
-    {
-        $this->type = $type;
+        $this->user = $user;
 
         return $this;
     }
@@ -147,12 +132,12 @@ class Agenda
         return $this;
     }
 
-    public function getDatep(): ?\DateTimeInterface
+    public function getDatep(): ?DateTimeInterface
     {
         return $this->datep;
     }
 
-    public function setDatep(\DateTimeInterface $datep): self
+    public function setDatep(DateTimeInterface $datep): self
     {
         $this->datep = $datep;
 
