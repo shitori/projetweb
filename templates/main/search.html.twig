@@ -5,9 +5,10 @@
     <div class="container-fluid">
         <div class="mt-1 rounded bg-light" style="padding: 50px">
             <h2>
-                Liste de tous les professeur de/d' -- à -- :
+                Liste de tous les professeur / Matière : {{ matiere }} / Ville : {{ ville }}
             </h2>
             <div class="row mt-1">
+
                 <div class="col-3 border-right">
                     <h5>Prix:</h5>
                     <div id="slider-container"></div>
@@ -48,88 +49,38 @@
                 </div>
                 <div class="col-9 pl-5">
                     <div class="row ">
-
-                        <div class="card text-center m-1" style="width: 18rem;">
-                            <div class="card-header" data-lvl="2">
-                                Maths - Collège
+                        {% for prof in profs %}
+                            <div class="card text-center m-1" style="width: 18rem;">
+                                <div class="card-header" data-lvl="{{ prof.niveau }}">
+                                    {{ prof.matiere }} -
+                                    {% if prof.niveau==4 %}
+                                        Supérieur
+                                    {% elseif prof.niveau==3 %}
+                                        Lycée
+                                    {% elseif prof.niveau==2 %}
+                                        Collège
+                                    {% else %}
+                                        Primaire
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    {% if prof.sexe == 0 %}
+                                        <img src="{{ asset('img/f.png') }}" class="border rounded-circle mx-auto"
+                                             style="width: 100px">
+                                    {% else %}
+                                        <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
+                                             style="width: 100px">
+                                    {% endif %}
+                                    <h5 class="card-title">{{ prof.nom }} {{ prof.prenom }}</h5>
+                                    <p class="card-text">{{ prof.adresse }} - {{ prof.ville }}</p>
+                                    <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                                </div>
+                                <div class="card-footer text-muted system" data-price="{{ prof.prix }}">
+                                    {{ prof.prix }} €/heure
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
-                                     style="width: 100px">
-                                <h5 class="card-title">Nom prénom</h5>
-                                <p class="card-text">adresse - ville</p>
-                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
-                            </div>
-                            <div class="card-footer text-muted system" data-price="10">
-                                10 €/heure
-                            </div>
-                        </div>
-
-                        <div class="card text-center m-1" style="width: 18rem;">
-                            <div class="card-header" data-lvl="3">
-                                Maths - Lycée
-                            </div>
-                            <div class="card-body">
-                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
-                                     style="width: 100px">
-                                <h5 class="card-title">Nom prénom</h5>
-                                <p class="card-text">adresse - ville</p>
-                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
-                            </div>
-                            <div class="card-footer text-muted system" data-price="25">
-                                25 €/heure
-                            </div>
-                        </div>
-
-                        <div class="card text-center m-1" style="width: 18rem;">
-                            <div class="card-header" data-lvl="4">
-                                Maths - Supérieur
-                            </div>
-                            <div class="card-body">
-                                <img src="{{ asset('img/f.png') }}" class="border rounded-circle mx-auto"
-                                     style="width: 100px">
-                                <h5 class="card-title">Nom prénom</h5>
-                                <p class="card-text">adresse - ville</p>
-                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
-                            </div>
-                            <div class="card-footer text-muted system" data-price="55">
-                                55 €/heure
-                            </div>
-                        </div>
-
-                        <div class="card text-center m-1" style="width: 18rem;">
-                            <div class="card-header" data-lvl="3">
-                                Maths - Lycée
-                            </div>
-                            <div class="card-body">
-                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
-                                     style="width: 100px">
-                                <h5 class="card-title">Nom prénom</h5>
-                                <p class="card-text">adresse - ville</p>
-                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
-                            </div>
-                            <div class="card-footer text-muted system" data-price="35">
-                                35 €/heure
-                            </div>
-                        </div>
-
-                        <div class="card text-center m-1" style="width: 18rem;">
-                            <div class="card-header" data-lvl="2">
-                                Maths - Collège
-                            </div>
-                            <div class="card-body">
-                                <img src="{{ asset('img/h.png') }}" class="border rounded-circle mx-auto"
-                                     style="width: 100px">
-                                <h5 class="card-title">Nom prénom</h5>
-                                <p class="card-text">adresse - ville</p>
-                                <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
-                            </div>
-                            <div class="card-footer text-muted system" data-price="25">
-                                25 €/heure
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
-
                 </div>
             </div>
         </div>

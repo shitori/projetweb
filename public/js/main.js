@@ -34,11 +34,11 @@ $(document).ready(function () {
         "Lille"
     ];
 
-    $("#inputMat").autocomplete({
+    $("#form_inputMat").autocomplete({
         source: matiere
     });
 
-    $("#inputCity").autocomplete({
+    $("#form_inputCity").autocomplete({
         source: ville
     });
 

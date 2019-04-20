@@ -8,23 +8,24 @@
                 Bienvenue sur nom_site <br>
                 Chercher votre professeur dès maintenant :
             </h1>
-            <form>
-                <div class="form-row ">
 
-                    <div class="form-group input-group-lg col-md-4">
-                        <label for="inputMat">Votre matière</label>
-                        <input type="text" class="form-control" id="inputMat">
-                    </div>
-                    <div class="form-group input-group-lg col-md-5">
-                        <label for="inputCity">Votre ville</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputZip"> Votre profeseur</label>
-                        <button type="submit" class="form-control btn btn-primary btn-lg">Recherche</button>
-                    </div>
+            {{ form_start(form) }}
+            <div class="form-row ">
+                <div class="form-group input-group-lg col-md-4">
+                    <label for="inputMat">Votre matière</label>
+                    {{ form_widget(form.inputMat,{'attr': {'class': 'form-control', 'id':'inputMat'}})}}
                 </div>
-            </form>
+                <div class="form-group input-group-lg col-md-5">
+                    <label for="inputCity">Votre ville</label>
+                    {{ form_widget(form.inputCity,{'attr': {'class': 'form-control', 'id':'inputCity'}})}}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="submitButton"> Votre profeseur</label>
+                    {{ form_widget(form.recherche,{'attr': {'class': 'form-control btn btn-primary btn-lg'}})}}
+                </div>
+            </div>
+            {{ form_end(form) }}
+
             <div class="row mt-5 ">
                 <div class="col-4 text-center">
                     <img src="{{ asset('img/acc-1.png') }}" class="border rounded-circle mx-auto" style="width: 100px">
