@@ -10,8 +10,7 @@
 {% endif %}
     <div class="container">
         <div class="mt-5 rounded bg-light" style="padding: 50px">
-            <h2> Inscrivez vous:</h2>
-            <p>Si vous voulez vous inscrire en tant que professeur, <a href="/inscription_professeur">cliquez ici</a></p>
+            <h2> Inscrivez vous en tant que professeur:</h2>
             {{ form_start(form) }}
             <div class="form-row">
                 <div class="form-group col-md-4">
@@ -53,6 +52,16 @@
                 <div class="form-group col-md-3">
                     <label for="inputBd">Date de naissance</label>
                     {{ form_widget(form.inputBd,{'attr': {'class': 'form-control'}})}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputAddr">Adresse de domicile</label>
+                    {{ form_widget(form.inputAddr,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPrice">Prix de séance (€/h)</label>
+                    {{ form_widget(form.inputPrice,{'attr': {'class': 'form-control'}})}}
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">S'inscrire</button>

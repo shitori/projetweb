@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Agenda;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\DBALException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,38 @@ class AgendaRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Agenda::class);
+    }
+
+    public function userAgenda($idUser){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'select * from agenda
+                join professeur p on agenda.prof_id = p.id
+                join user u on agenda.user_id = u.id
+                where u.id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idUser);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function profAgenda($idProf){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'select * from agenda
+                join professeur p on agenda.prof_id = p.id
+                join user u on agenda.user_id = u.id
+                where p.id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idProf);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
     // /**

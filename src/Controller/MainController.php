@@ -7,6 +7,9 @@ use App\Entity\Competence;
 use App\Entity\Disponibilite;
 use App\Entity\Professeur;
 use App\Entity\User;
+use Composer\Semver\Constraint\Constraint;
+use phpDocumentor\Reflection\Types\This;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,10 +23,6 @@ class MainController extends AbstractController
      */
     public function index(Request $request)
     {
-        define('PREFIX_SALT', 'prison');
-        define('SUFFIX_SALT', 'break');
-        $hashSecure = md5(PREFIX_SALT . 'root' . SUFFIX_SALT);
-        dump($hashSecure);
         $tab = (object)array('inputCity' => "", 'inputMat' => "");
         $form = $this->createFormBuilder($tab)
             ->add("inputCity", TextType::class)
@@ -45,30 +44,6 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/connexion", name="connexion")
-     */
-    public function connexion()
-    {
-        return $this->render('main/connexion.html.twig');
-    }
-
-    /**
-     * @Route("/inscription", name="inscription")
-     */
-    public function inscription()
-    {
-        return $this->render('main/inscription.html.twig');
-    }
-
-    /**
-     * @Route("/inscription_professeur", name="inscription_professeur")
-     */
-    public function inscription_professeur()
-    {
-        return $this->render('main/inscription_professeur.html.twig');
-    }
-
-    /**
      * @Route("/search", name="search")
      */
     public function search()
@@ -79,6 +54,115 @@ class MainController extends AbstractController
 
         return $this->render('main/search.html.twig',
             array('profs' => $profs, 'matiere' => "Toutes", 'ville' => "Toutes"));
+    }
+
+    /**
+     * @Route("/profil", name="profil")
+     */
+    public function profil()
+    {
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute("home");
+        }
+        $repository1 = $this->getDoctrine()->getRepository(User::class);
+        $userData = $repository1->findOneBy(["confidental" => $user]);
+        $repository = $this->getDoctrine()->getRepository(Professeur::class);
+        $profData = $repository->findOneBy(["user" => $userData]);
+        $repository = $this->getDoctrine()->getRepository(Agenda::class);
+        $agendaData = $repository->userAgenda($userData->getId());
+        $agendaDataProf = null;
+        $competenceData = null;
+        $dispoData = null;
+        if ($profData) {
+            $agendaDataProf = $repository->profAgenda($profData->getId());
+            $repository = $this->getDoctrine()->getRepository(Competence::class);
+            $competenceData = $repository->profCompetence($profData->getId());
+            $repository = $this->getDoctrine()->getRepository(Disponibilite::class);
+            $dispoData = $repository->profDispo($profData->getId());
+        }
+        $addCom = (object)array('matiere' => "", 'niveau' => 1);
+        $formComp = $this->createFormBuilder($addCom)
+            ->add("matiere", ChoiceType::class,
+                array("choices" => array(
+                    "Français" => "Français",
+                    "Mathématiques" => "Mathématiques",
+                    "Anglais" => "Anglais",
+                    "Espagnol" => "Espagnol",
+                    "Italien" => "Italien",
+                    "Histoire" => "Histoire",
+                    "Géographie" => "Géographie",
+                    "Éducation Civique" => "Éducation Civique",
+                    "Sciences de la Vie et de la Terre" => "Sciences de la Vie et de la Terre",
+                    "Technologie" => "Technologie",
+                    "Éducation Musical" => "Éducation Musical",
+                    "Art Plastique" => "Art Plastique",
+                    "Éducation Physique et Sportive" => "Éducation Physique et Sportive",
+                    "Physique" => "Physique",
+                    "Chimie" => "Chimie",
+                    "Science de l'ingénieur" => "Science de l'ingénieur",
+                    "Philosophie" => "Philosophie",
+                    "Science Économique" => "Science Économique"
+                )))
+            ->add("niveau", ChoiceType::class,
+                array("choices" => array(
+                    "Primaire" => 1,
+                    "Collège" => 2,
+                    "Lycée" => 3,
+                    "Supérieur" => 4
+                )))
+            ->getForm();
+
+        $addDispo = (object)array('jour' => 1, 'debut' => "8:00");
+        $formDispo = $this->createFormBuilder($addDispo)
+            ->add("jour", ChoiceType::class,
+                array("choices" => array(
+                    "Lundi" => 1,
+                    "Mardi" => 2,
+                    "Mercredi" => 3,
+                    "Jeudi" => 4,
+                    "Vendredi" => 5,
+                    "Samedi" => 6,
+                    "Dimanche" => 7
+                )))
+            ->add("debut", ChoiceType::class,
+                array("choices" => array(
+                    "8:00" => "8:00",
+                    "9:00" => "9:00",
+                    "10:00" => "10:00",
+                    "11:00" => "11:00",
+                    "12:00" => "12:00",
+                    "13:00" => "13:00",
+                    "14:00" => "14:00",
+                    "15:00" => "15:00",
+                    "16:00" => "16:00",
+                    "17:00" => "17:00",
+                    "18:00" => "18:00",
+                    "19:00" => "19:00"
+                )))
+            ->getForm();
+        dump($competenceData,$dispoData,$agendaData);
+
+        if ($formComp->isSubmitted() && $formComp->isValid()) {
+            dump($addCom);
+            $repository = $this->getDoctrine()->getRepository(Competence::class);
+            $repository->insertCompetences($addCom->matiere,$addCom->niveau,$profData->getId());
+            return $this->redirectToRoute("profil");
+        }
+
+        if ($formDispo->isSubmitted() && $formDispo->isValid()) {
+            dump($addDispo);
+            return $this->redirectToRoute("profil");
+        }
+        return $this->render('main/profil.html.twig',
+            array("user" => $userData,
+                "prof" => $profData,
+                "agendas" => $agendaData,
+                "agendasProf" => $agendaDataProf,
+                "compts" => $competenceData,
+                "dispos" => $dispoData,
+                "formComp" => $formComp->createView(),
+                "formDispo" => $formDispo->createView()));
     }
 
 }

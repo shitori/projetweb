@@ -27,7 +27,7 @@ security:
                 check_path: app_login
 
             logout:
-                path : app_disconect
+                path : app_logout
                 target : home
             # activate different ways to authenticate
 
