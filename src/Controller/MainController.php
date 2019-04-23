@@ -57,9 +57,39 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route("/remove/{data}/{id}", name="remove")
+     */
+    public function remove($data,$id)
+    {
+        dump($data,$id);
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute("home");
+        }
+        $repository1 = $this->getDoctrine()->getRepository(User::class);
+        $repository = $this->getDoctrine()->getRepository(Professeur::class);
+        $profData = $repository->findOneBy(["user" => $repository1->findOneBy(["confidental" => $user])]);
+        if ($profData == null){
+            return $this->redirectToRoute("home");
+        }
+        if ($data == "competence"){
+            $repository = $this->getDoctrine()->getRepository(Competence::class);
+            $repository->removeCompetence($id,$profData->getId());
+        }
+
+        if ($data == "disponibilite"){
+            $repository = $this->getDoctrine()->getRepository(Disponibilite::class);
+            $repository->removeDispo($id,$profData->getId());
+
+        }
+        return $this->redirectToRoute("profil");
+    }
+
+
+    /**
      * @Route("/profil", name="profil")
      */
-    public function profil()
+    public function profil(Request $request)
     {
         $user = $this->getUser();
         if ($user == null) {
@@ -81,7 +111,7 @@ class MainController extends AbstractController
             $repository = $this->getDoctrine()->getRepository(Disponibilite::class);
             $dispoData = $repository->profDispo($profData->getId());
         }
-        $addCom = (object)array('matiere' => "", 'niveau' => 1);
+        $addCom = (object)array('matiere' => "", 'niveau' => 1, "ajouter");
         $formComp = $this->createFormBuilder($addCom)
             ->add("matiere", ChoiceType::class,
                 array("choices" => array(
@@ -111,9 +141,10 @@ class MainController extends AbstractController
                     "Lycée" => 3,
                     "Supérieur" => 4
                 )))
+            ->add("ajouter",SubmitType::class)
             ->getForm();
 
-        $addDispo = (object)array('jour' => 1, 'debut' => "8:00");
+        $addDispo = (object)array('jour' => 1, 'debut' => "8:00","ajouter");
         $formDispo = $this->createFormBuilder($addDispo)
             ->add("jour", ChoiceType::class,
                 array("choices" => array(
@@ -140,18 +171,21 @@ class MainController extends AbstractController
                     "18:00" => "18:00",
                     "19:00" => "19:00"
                 )))
+            ->add("ajouter",SubmitType::class)
             ->getForm();
         dump($competenceData,$dispoData,$agendaData);
-
+        $formComp->handleRequest($request);
         if ($formComp->isSubmitted() && $formComp->isValid()) {
             dump($addCom);
             $repository = $this->getDoctrine()->getRepository(Competence::class);
             $repository->insertCompetences($addCom->matiere,$addCom->niveau,$profData->getId());
             return $this->redirectToRoute("profil");
         }
-
+        $formDispo->handleRequest($request);
         if ($formDispo->isSubmitted() && $formDispo->isValid()) {
             dump($addDispo);
+            $repository = $this->getDoctrine()->getRepository(Disponibilite::class);
+            $repository->insertDispo($addDispo->jour,$addDispo->debut,$profData->getId());
             return $this->redirectToRoute("profil");
         }
         return $this->render('main/profil.html.twig',

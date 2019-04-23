@@ -70,12 +70,30 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="">Sauvegarder la nouvelle matière</label><br>
-                        <button type="submit" class="btn btn-success ">Ajouter</button>
+                        {{ form_widget(formComp.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
                     </div>
                 </div>
                 {{ form_end(formComp) }}
 
                 {% if compts %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Matière</th>
+                            <th scope="col">Niveau</th>
+                            <th scope="col">Supprimer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for compt in compts %}
+                            <tr>
+                                <td>{{ compt.matiere }}</td>
+                                <td>{{ compt.niveau }}</td>
+                                <td><a href="/remove/competence/{{ compt.competence_id }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 {% else %}
                     <p class="text-center">Aucune Compétences</p>
                 {% endif %}
@@ -98,11 +116,45 @@
 
                     <div class="form-group col-md-4">
                         <label for="">Sauvegarder la nouvelle Disponibilité</label><br>
-                        <button type="submit" class="btn btn-success ">Ajouter</button>
+                        {{ form_widget(formDispo.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
                     </div>
                 </div>
                 {{ form_end(formDispo) }}
                 {% if dispos %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Jour</th>
+                            <th scope="col">Début</th>
+                            <th scope="col">Fin</th>
+                            <th scope="col">Suprimmer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for dispo in dispos %}
+                            <tr>
+                                {% if dispo.jour == 1 %}
+                                    <td>Lundi</td>
+                                {% elseif  dispo.jour == 2%}
+                                    <td>Mardi</td>
+                                {% elseif  dispo.jour == 3%}
+                                    <td>Mercredi</td>
+                                {% elseif  dispo.jour == 4%}
+                                    <td>Jeudi</td>
+                                {% elseif  dispo.jour == 5%}
+                                    <td>Vendredi</td>
+                                {% elseif  dispo.jour == 6%}
+                                    <td>Samedi</td>
+                                {% else %}
+                                    <td>Dimanche</td>
+                                {% endif %}
+                                <td>{{ dispo.debut }}</td>
+                                <td>{{ dispo.fin }}</td>
+                                <td><a href="/remove/disponibilite/{{ dispo.disponibilite_id }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 {% else %}
                     <p class="text-center">Aucune disponibilité</p>
                 {% endif %}

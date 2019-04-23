@@ -5,6 +5,7 @@
       <w>adresse</w>
       <w>confidental</w>
       <w>datep</w>
+      <w>dispo</w>
       <w>disponibilite</w>
       <w>disponibilites</w>
       <w>disponibilités</w>
@@ -15,6 +16,7 @@
       <w>prenom</w>
       <w>prix</w>
       <w>professeur</w>
+      <w>profil</w>
       <w>raison</w>
       <w>sexe</w>
     </words>

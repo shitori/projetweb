@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Disponibilite;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\DBALException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -20,7 +21,8 @@ class DisponibiliteRepository extends ServiceEntityRepository
         parent::__construct($registry, Disponibilite::class);
     }
 
-    public function profDispo($idProf){
+    public function profDispo($idProf)
+    {
 
         $conn = $this->getEntityManager()
             ->getConnection();
@@ -37,32 +39,42 @@ class DisponibiliteRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    // /**
-    //  * @return Disponibilite[] Returns an array of Disponibilite objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function insertDispo($dayDispo, $hourDispoS, $idProf)
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $dispo = $this->findOneBy(["jour" => $dayDispo, "debut" => new DateTime($hourDispoS)]);
+        $tabTest = $this->profDispo($idProf);
+        foreach ($tabTest as $value) {
+            if ($value["disponibilite_id"] == $dispo->getId()) {
+                return "La compétence a déja été ajouté";
+            }
+        }
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'insert into disponibilite_professeur value (?,?)';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $dispo->getId());
+        $stmt->bindValue(2, $idProf);
+        $stmt->execute();
+        return "La compétence a bien été ajouté";
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Disponibilite
+    public function removeDispo($idDispo, $idProf)
     {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'delete from disponibilite_professeur 
+                where disponibilite_id= ? and professeur_id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idDispo);
+        $stmt->bindValue(2, $idProf);
+        $stmt->execute();
+        return "La compétence a bien été supprimé";
     }
-    */
+
 }

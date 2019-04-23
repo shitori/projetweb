@@ -22,7 +22,6 @@ class CompetenceRepository extends ServiceEntityRepository
 
     public function profCompetence($idProf)
     {
-
         $conn = $this->getEntityManager()
             ->getConnection();
         $sql = 'select * from competence 
@@ -41,6 +40,12 @@ class CompetenceRepository extends ServiceEntityRepository
     public function insertCompetences($nameCompt, $nivCompt, $idProf)
     {
         $compt = $this->findOneBy(["matiere" => $nameCompt, "niveau" => $nivCompt]);
+        $tabTest = $this->profCompetence($idProf);
+        foreach ($tabTest as $value){
+            if ($value["competence_id"] == $compt->getId()){
+                return "La compétence a déja été ajouté";
+            }
+        }
         $conn = $this->getEntityManager()
             ->getConnection();
         $sql = 'insert into competence_professeur value (?,?)';
@@ -54,32 +59,20 @@ class CompetenceRepository extends ServiceEntityRepository
         return "La compétence a bien été ajouté";
     }
 
-    // /**
-    //  * @return Competence[] Returns an array of Competence objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function removeCompetence($idCompt,$idProf){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'delete from competence_professeur 
+                where competence_id= ? and professeur_id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idCompt);
+        $stmt->bindValue(2, $idProf);
+        $stmt->execute();
+        return "La compétence a bien été supprimé";
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Competence
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }
