@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Agenda;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\DBALException;
+use Exception;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -20,13 +22,14 @@ class AgendaRepository extends ServiceEntityRepository
         parent::__construct($registry, Agenda::class);
     }
 
-    public function userAgenda($idUser){
+    public function userAgenda($idUser)
+    {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'select * from agenda
+        $sql = 'select *,agenda.id as idAgenda from agenda
                 join professeur p on agenda.prof_id = p.id
-                join user u on agenda.user_id = u.id
-                where u.id = ?';
+                join user u on p.user_id = u.id
+                where agenda.user_id = ?';
         try {
             $stmt = $conn->prepare($sql);
         } catch (DBALException $e) {
@@ -36,10 +39,11 @@ class AgendaRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    public function profAgenda($idProf){
+    public function profAgenda($idProf)
+    {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'select * from agenda
+        $sql = 'select *,agenda.id as idAgenda from agenda
                 join professeur p on agenda.prof_id = p.id
                 join user u on agenda.user_id = u.id
                 where p.id = ?';
@@ -52,32 +56,39 @@ class AgendaRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    // /**
-    //  * @return Agenda[] Returns an array of Agenda objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function noPlace($date, $hour, $idProf)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'select * from agenda
+                where prof_id = ? and 
+                datep = CONVERT(?, date ) 
+                and debut = CONVERT(?,time )';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idProf);
+        $stmt->bindValue(2, $date);
+        $stmt->bindValue(3, $hour);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Agenda
+    public function removeAgenda($idAgenda, $idCurrentUser)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'delete from agenda where id = ? and user_id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idAgenda);
+        $stmt->bindValue(2, $idCurrentUser);
+        $stmt->execute();
+        return "Le rendez vous a bien été surprimer";
     }
-    */
+
+
 }

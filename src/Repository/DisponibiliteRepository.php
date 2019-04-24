@@ -77,4 +77,27 @@ class DisponibiliteRepository extends ServiceEntityRepository
         return "La compétence a bien été supprimé";
     }
 
+    public function findHorairePossible($idProf,$hour,$day){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "select * from disponibilite
+                join disponibilite_professeur dp on disponibilite.id = dp.disponibilite_id
+                join professeur p on dp.professeur_id = p.id
+                where p.id = ?  and jour = ? and debut =  CONVERT(?,time )";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idProf);
+        $stmt->bindValue(2, $day);
+        $stmt->bindValue(3, $hour);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
+
+
+
+
 }

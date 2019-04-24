@@ -61,7 +61,6 @@ class SecurityController extends AbstractController
             "inputCity" => "",
             "inputPhone" => "",
             "inputBd" => new DateTime());
-
         $form = $this->createFormBuilder($data)
             ->add('inputEmail', EmailType::class)
             ->add('inputLastName', TextType::class)
@@ -107,12 +106,12 @@ class SecurityController extends AbstractController
      * @Route("/register_prof", name="app_register_prof")
      */
     public function registerProf(Request $request,
-                             UserPasswordEncoderInterface $encoder,
-                             ObjectManager $manager): Response
+                                 UserPasswordEncoderInterface $encoder,
+                                 ObjectManager $manager): Response
     {
         $usersecurity = new Usersecurity();
         $user = new User();
-        $prof= new Professeur();
+        $prof = new Professeur();
         $error = false;
         $data = (object)array(
             "inputEmail" => "",
@@ -126,8 +125,6 @@ class SecurityController extends AbstractController
             "inputBd" => new DateTime(),
             "inputAddr" => "",
             "inputPrice" => 0);
-
-
         $form = $this->createFormBuilder($data)
             ->add('inputEmail', EmailType::class)
             ->add('inputLastName', TextType::class)
@@ -138,8 +135,8 @@ class SecurityController extends AbstractController
             ->add('inputCity', TextType::class)
             ->add('inputPhone', TextType::class)
             ->add('inputBd', BirthdayType::class)
-            ->add('inputAddr',TextType::class)
-            ->add('inputPrice',NumberType::class )
+            ->add('inputAddr', TextType::class)
+            ->add('inputPrice', NumberType::class)
             ->getForm();
         dump($form->createView());
         $form->handleRequest($request);
@@ -182,24 +179,54 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/modifer", name="app_modifer")
+     */
+    public function modifier(Request $request)
+    {
+        $data = (object)array(
+            "inputLastName" => "",
+            "inputFirstName" => "",
+            "inputSexe" => "",
+            "inputCity" => "",
+            "inputPhone" => "",
+            "inputBd" => new DateTime());
+        $form = $this->createFormBuilder($data)
+            ->add('inputLastName', TextType::class)
+            ->add('inputFirstName', TextType::class)
+            ->add('inputSexe', ChoiceType::class, array('choices' => array("Homme" => 0, "Femme" => 1)))
+            ->add('inputCity', TextType::class)
+            ->add('inputPhone', TextType::class)
+            ->add('inputBd', BirthdayType::class)
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($data);
+            return $this->redirectToRoute("profil");
+        }
+        return $this->render('security/modifier.html.twig',
+            array("form" => $form->createView()));
+    }
+
+
+    /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout(){}
+    public function logout()
+    {
+    }
 
-    public function floatValue($str){
-        if(preg_match("/([0-9\.,-]+)/", $str, $match)){
+    public function floatValue($str)
+    {
+        if (preg_match("/([0-9\.,-]+)/", $str, $match)) {
             $value = $match[0];
-            if( preg_match("/(\.\d{1,2})$/", $value, $dot_delim) ){
+            if (preg_match("/(\.\d{1,2})$/", $value, $dot_delim)) {
                 $value = (float)str_replace(',', '', $value);
-            }
-            else if( preg_match("/(,\d{1,2})$/", $value, $comma_delim) ){
+            } else if (preg_match("/(,\d{1,2})$/", $value, $comma_delim)) {
                 $value = str_replace('.', '', $value);
                 $value = (float)str_replace(',', '.', $value);
-            }
-            else
+            } else
                 $value = (int)$value;
-        }
-        else {
+        } else {
             $value = 0;
         }
         return $value;

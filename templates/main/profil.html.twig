@@ -30,6 +30,40 @@
         </div>
         <h5>Mes rendez-vous</h5>
         {% if agendas %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Heure début</th>
+                    <th scope="col">Heure fin</th>
+                    <th scope="col">Info professeur</th>
+                    <th scope="col">Raison</th>
+                    <th scope="col">Accès aux profil</th>
+                    <th scope="col">Annuler le rendez vous</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for agenda in agendas %}
+                    <tr>
+                        <td>{{ agenda.datep }}</td>
+                        <td>{{ agenda.debut }}</td>
+                        <td>{{ agenda.fin }}</td>
+                        {% if agenda.sexe ==0 %}
+                            <td>Mr {{ agenda.nom }} {{ agenda.prenom  }},
+                                né le {{ agenda.birthday|date('Y-m-d') }}
+                                et vit à {{ agenda.ville }}</td>
+                        {% else %}
+                            <td>Mme {{ agenda.nom }} {{ agenda.prenom  }},
+                                né le {{ agenda.birthday|date('Y-m-d') }}
+                                et vit à {{ agenda.ville }}</td>
+                        {% endif %}
+                        <td>{{ agenda.raison }}</td>
+                        <td><a href="/profil/{{ agenda.id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
+                        <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             <p class="text-center">Aucun rendez-vous pris</p>
         {% endif %}
@@ -45,16 +79,56 @@
         </h4>
         <div class="row">
             <p class="col-6">
-                <span class="font-weight-bold"> Adresse de domicile</span>
+                <span class="font-weight-bold"> Adresse de domicile : </span>
                 {{ prof.adresse }}
             </p>
             <p class="col-6">
-                <span class="font-weight-bold">Prix pour une heure de cours</span>
+                <span class="font-weight-bold">Prix pour une heure de cours : </span>
                 {{ prof.prix }} €/h
             </p>
         </div>
+            <h5>Mes rendez-vous professeur</h5>
+            {% if agendasProf %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Heure début</th>
+                        <th scope="col">Heure fin</th>
+                        <th scope="col">Info élève</th>
+                        <th scope="col">Raison</th>
+                        <th scope="col">Accès aux profil</th>
+                        <th scope="col">Annuler le rendez vous</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for agenda in agendasProf %}
+                        <tr>
+                            <td>{{ agenda.datep }}</td>
+                            <td>{{ agenda.debut }}</td>
+                            <td>{{ agenda.fin }}</td>
+                            {% if agenda.sexe ==0 %}
+                                <td>Mr {{ agenda.nom }} {{ agenda.prenom  }},
+                                    né le {{ agenda.birthday|date('Y-m-d') }}
+                                    et vit à {{ agenda.ville }}</td>
+                            {% else %}
+                                <td>Mme {{ agenda.nom }} {{ agenda.prenom  }},
+                                    né le {{ agenda.birthday|date('Y-m-d') }}
+                                    et vit à {{ agenda.ville }}</td>
+                            {% endif %}
+                            <td>{{ agenda.raison }}</td>
+                            <td><a href="/profil/{{ agenda.id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
+                            <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-center">Aucun rendez-vous reçus</p>
+            {% endif %}
 
-        <div class="row">
+
+            <div class="row">
             <div class="col-6">
                 <h5>Compétences</h5>
                 <h6>+ Nouvelle Competences</h6>
@@ -161,11 +235,7 @@
 
             </div>
         </div>
-            <h5>Mes rendez-vous professeur</h5>
-            {% if agendas %}
-            {% else %}
-                <p class="text-center">Aucun rendez-vous reçus</p>
-            {% endif %}
+
         {% endif %}
 
     </div>

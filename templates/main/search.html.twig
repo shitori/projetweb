@@ -73,7 +73,7 @@
                                     {% endif %}
                                     <h5 class="card-title">{{ prof.nom }} {{ prof.prenom }}</h5>
                                     <p class="card-text">{{ prof.adresse }} - {{ prof.ville }}</p>
-                                    <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+                                    <a href="/profil/{{ prof.confidental_id }}" class="btn btn-primary">Prendre rendez-vous</a>
                                 </div>
                                 <div class="card-footer text-muted system" data-price="{{ prof.prix }}">
                                     {{ prof.prix }} €/heure

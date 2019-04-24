@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+{% if error %}
+    <div class="alert alert-danger" role="alert">
+        Données incorectes
+    </div>
+{% endif %}
+    <div class="container">
+        <div class="mt-5 rounded bg-light" style="padding: 50px">
+            <h2> Inscrivez vous:</h2>
+            {{ form_start(form) }}
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputEmail">Adresse mail</label>
+                    {{ form_widget(form.inputEmail,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputLastName">Nom de famille</label>
+                    {{ form_widget(form.inputLastName,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputFirstName">Prénom</label>
+                    {{ form_widget(form.inputFirstName,{'attr': {'class': 'form-control'}})}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputPass">Mot de passe</label>
+                    {{ form_widget(form.inputPass,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassConfirm">Confirmer mot de passe</label>
+                    {{ form_widget(form.inputPassConfirm,{'attr': {'class': 'form-control'}})}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="inputSexe">Sexe</label>
+                    {{ form_widget(form.inputSexe,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputCity">Ville</label>
+                    {{ form_widget(form.inputCity,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputPhone">Téléphone</label>
+                    {{ form_widget(form.inputPhone,{'attr': {'class': 'form-control'}})}}
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputBd">Date de naissance</label>
+                    {{ form_widget(form.inputBd,{'attr': {'class': 'form-control'}})}}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">S'inscrire</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

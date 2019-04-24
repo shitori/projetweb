@@ -96,24 +96,24 @@ class Agenda
         return $this;
     }
 
-    public function getProfId(): ?Professeur
+    public function getProf(): ?Professeur
     {
         return $this->prof;
     }
 
-    public function setProfId(?Professeur $prof): self
+    public function setProf(?Professeur $prof): self
     {
         $this->prof = $prof;
 
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
