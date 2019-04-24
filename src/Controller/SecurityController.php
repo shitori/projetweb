@@ -179,10 +179,53 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * @Route("/modifer_professeur", name="app_modifer_prof")
+     */
+    public function modifierProf(Request $request)
+    {
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute("home");
+        }
+        $repository1 = $this->getDoctrine()->getRepository(User::class);
+        $userData = $repository1->findOneBy(["confidental" => $user]);
+        $repository = $this->getDoctrine()->getRepository(Professeur::class);
+        $profData = $repository->findOneBy(["user" => $repository1->findOneBy(["confidental" => $user])]);
+        if ($profData == null){
+            return $this->redirectToRoute("home");
+        }
+        $data = (object)array(
+            "inputAddr" => "",
+            "inputPrice" => 0);
+        $form = $this->createFormBuilder($data)
+            ->add('inputAddr', TextType::class)
+            ->add('inputPrice', NumberType::class)
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($data);
+            $repository1 = $this->getDoctrine()->getRepository(Professeur::class);
+            $repository1->modif($data->inputAddr,
+                $this->floatValue($data->inputPrice),
+                $profData->getId());
+            return $this->redirectToRoute("profil");
+        }
+        return $this->render('security/modifier_prof.html.twig',
+            array("form" => $form->createView(), "info" => $profData));
+    }
+
+
+    /**
      * @Route("/modifer", name="app_modifer")
      */
     public function modifier(Request $request)
     {
+        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute("home");
+        }
+        $repository1 = $this->getDoctrine()->getRepository(User::class);
+        $userData = $repository1->findOneBy(["confidental" => $user]);
         $data = (object)array(
             "inputLastName" => "",
             "inputFirstName" => "",
@@ -201,10 +244,18 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             dump($data);
+            $repository1 = $this->getDoctrine()->getRepository(User::class);
+            $repository1->modif($data->inputLastName,
+                $data->inputFirstName,
+                $data->inputSexe,
+                $data->inputCity,
+                $data->inputPhone,
+                $data->inputBd,
+                $userData->getId());
             return $this->redirectToRoute("profil");
         }
         return $this->render('security/modifier.html.twig',
-            array("form" => $form->createView()));
+            array("form" => $form->createView(), "info" => $userData));
     }
 
 

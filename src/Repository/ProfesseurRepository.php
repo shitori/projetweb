@@ -71,5 +71,23 @@ class ProfesseurRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
+    public function modif($addr,$prix,$idProd){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "update professeur
+                    set adresse=?,
+                    prix=?
+                    where id = ?";
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $addr);
+        $stmt->bindValue(2, $prix);
+        $stmt->bindValue(3, $idProd);
+        $stmt->execute();
+        return "Profil modifié";
+    }
+
 
 }
