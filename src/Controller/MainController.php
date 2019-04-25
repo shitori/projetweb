@@ -8,20 +8,15 @@ use App\Entity\Disponibilite;
 use App\Entity\Professeur;
 use App\Entity\User;
 use App\Entity\Usersecurity;
-use Composer\Semver\Constraint\Constraint;
-use phpDocumentor\Reflection\Types\This;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
-use function Sodium\add;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
@@ -207,8 +202,8 @@ class MainController extends AbstractController
                 $operation = '+' . $ope . 'days';
                 $date = date('Y-m-d', strtotime($operation));
                 $repository1 = $this->getDoctrine()->getRepository(Agenda::class);
-                $horairePris = $repository1->noPlace($addAgenda->debut, $addAgenda->debut, $profData->getId());
-                print_r ($horairePris);
+                $horairePris = $repository1->noPlace($date, $addAgenda->debut, $profData->getId());
+
                 if (sizeof($horairePris) > 0) {
                     return $this->redirectToRoute("information", ["id" => $id]);
                 }
@@ -341,7 +336,6 @@ class MainController extends AbstractController
             $repository->insertCompetences($addCom->matiere, $addCom->niveau, $profData->getId());
             return $this->redirectToRoute("profil");
         }
-        dump($agendaData,$agendaDataProf);
         $formDispo->handleRequest($request);
         if ($formDispo->isSubmitted() && $formDispo->isValid()) {
             $repository = $this->getDoctrine()->getRepository(Disponibilite::class);

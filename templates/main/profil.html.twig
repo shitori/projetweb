@@ -17,7 +17,7 @@
                 {% else %}
                     Monsieur
                 {% endif %}
-                {{ user.nom }} {{ user.prenom }} {{ user.birthday|date('Y-m-d') }}
+                {{ user.nom }} {{ user.prenom }}, né le {{ user.birthday|date('Y-m-d') }}
             </p>
             <p class="col-4">
                 <span class="font-weight-bold">Contact :</span>
@@ -58,7 +58,8 @@
                                 et vit à {{ agenda.ville }}</td>
                         {% endif %}
                         <td>{{ agenda.raison }}</td>
-                        <td><a href="/profil/{{ agenda.id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
+                        <td><a href="/profil/{{ agenda.confidental_id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a>
+                        </td>
                         <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
                     </tr>
                 {% endfor %}
@@ -117,7 +118,8 @@
                                     et vit à {{ agenda.ville }}</td>
                             {% endif %}
                             <td>{{ agenda.raison }}</td>
-                            <td><a href="/profil/{{ agenda.id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
+                            <td><a href="/profil/{{ agenda.confidental_id }}"
+                                   class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
                             <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
                         </tr>
                     {% endfor %}

@@ -6,24 +6,19 @@ use App\Entity\Professeur;
 use App\Entity\User;
 use App\Entity\Usersecurity;
 use DateTime;
-use DateTimeInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Psr\Container\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Validator\Constraints\Date;
 
 
 class SecurityController extends AbstractController
@@ -72,11 +67,13 @@ class SecurityController extends AbstractController
             ->add('inputPhone', TextType::class)
             ->add('inputBd', BirthdayType::class)
             ->getForm();
-        dump($form->createView());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($data);
-            if (filter_var($data->inputEmail, FILTER_VALIDATE_EMAIL) && $data->inputPass == $data->inputPassConfirm) {
+            $repository = $this->getDoctrine()->getRepository(Usersecurity::class);
+
+            if (filter_var($data->inputEmail, FILTER_VALIDATE_EMAIL)
+                && $data->inputPass == $data->inputPassConfirm
+                && $repository->findOneBy(["email" => $data->inputEmail]) == null) {
                 $usersecurity->setEmail($data->inputEmail);
                 $usersecurity->setPassword($data->inputPass);
                 $hash = $encoder->encodePassword($usersecurity, $usersecurity->getPassword());
@@ -138,11 +135,12 @@ class SecurityController extends AbstractController
             ->add('inputAddr', TextType::class)
             ->add('inputPrice', NumberType::class)
             ->getForm();
-        dump($form->createView());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($data);
-            if (filter_var($data->inputEmail, FILTER_VALIDATE_EMAIL) && $data->inputPass == $data->inputPassConfirm) {
+            $repository = $this->getDoctrine()->getRepository(Usersecurity::class);
+            if (filter_var($data->inputEmail, FILTER_VALIDATE_EMAIL)
+                && $data->inputPass == $data->inputPassConfirm
+                && $repository->findOneBy(["email" => $data->inputEmail] == null)) {
                 $usersecurity->setEmail($data->inputEmail);
                 $usersecurity->setPassword($data->inputPass);
                 $hash = $encoder->encodePassword($usersecurity, $usersecurity->getPassword());
@@ -160,10 +158,7 @@ class SecurityController extends AbstractController
                 $user->setVille($data->inputCity);
                 $manager->persist($user);
                 $manager->flush();
-                /*$repository = $this->getDoctrine()->getRepository(Usersecurity::class);
-                dump($repository->findAll());*/
                 $repository = $this->getDoctrine()->getRepository(User::class);
-                //dump($repository->findAll());
                 $actualuser = $repository->findOneBy(["confidental" => $actualuser]);
                 $prof->setUser($actualuser);
                 $prof->setAdresse($data->inputAddr);
@@ -191,7 +186,7 @@ class SecurityController extends AbstractController
         $userData = $repository1->findOneBy(["confidental" => $user]);
         $repository = $this->getDoctrine()->getRepository(Professeur::class);
         $profData = $repository->findOneBy(["user" => $repository1->findOneBy(["confidental" => $user])]);
-        if ($profData == null){
+        if ($profData == null) {
             return $this->redirectToRoute("home");
         }
         $data = (object)array(
@@ -203,7 +198,6 @@ class SecurityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($data);
             $repository1 = $this->getDoctrine()->getRepository(Professeur::class);
             $repository1->modif($data->inputAddr,
                 $this->floatValue($data->inputPrice),
@@ -243,7 +237,6 @@ class SecurityController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($data);
             $repository1 = $this->getDoctrine()->getRepository(User::class);
             $repository1->modif($data->inputLastName,
                 $data->inputFirstName,
