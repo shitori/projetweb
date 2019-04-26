@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}EduCours - Connexion{% endblock %}
 
 {% block body %}
 
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger">Mail ou/et mot de passe incorrect</div>
     {% endif %}
     <div class="container">
         <div class="mt-5 rounded bg-light" style="padding: 50px">
