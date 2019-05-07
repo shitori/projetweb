@@ -2,244 +2,262 @@
 {% block title %}EduCours - Mon Profil{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="mt-1 rounded bg-light" style="padding: 50px">
-        <h2>Mon profil</h2>
-        <h4>
-            Information utilisateur :
-            <a href="{{ path('app_modifer') }}" class="btn btn-outline-warning ">Modifier mon profil utilisateur</a>
-        </h4>
-        <div class="row">
-            <p class="col-4">
-                <span class="font-weight-bold">Identité :</span>
-                {% if user.sexe %}
-                    Madame
-                {% else %}
-                    Monsieur
-                {% endif %}
-                {{ user.nom }} {{ user.prenom }}, né le {{ user.birthday|date('Y-m-d') }}
-            </p>
-            <p class="col-4">
-                <span class="font-weight-bold">Contact :</span>
-                {{ user.phone }} / {{ app.user.email }}
-            </p>
-            <p class="col-4">
-                <span class="font-weight-bold">Ville de domicile :</span>
-                {{ user.ville }}
-            </p>
-        </div>
-        <h5>Mes rendez-vous</h5>
-        {% if agendas %}
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Heure début</th>
-                    <th scope="col">Heure fin</th>
-                    <th scope="col">Info professeur</th>
-                    <th scope="col">Raison</th>
-                    <th scope="col">Accès aux profil</th>
-                    <th scope="col">Annuler le rendez vous</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for agenda in agendas %}
-                    <tr>
-                        <td>{{ agenda.datep }}</td>
-                        <td>{{ agenda.debut }}</td>
-                        <td>{{ agenda.fin }}</td>
-                        {% if agenda.sexe ==0 %}
-                            <td>Mr {{ agenda.nom }} {{ agenda.prenom  }},
-                                né le {{ agenda.birthday|date('Y-m-d') }}
-                                et vit à {{ agenda.ville }}</td>
-                        {% else %}
-                            <td>Mme {{ agenda.nom }} {{ agenda.prenom  }},
-                                né le {{ agenda.birthday|date('Y-m-d') }}
-                                et vit à {{ agenda.ville }}</td>
-                        {% endif %}
-                        <td>{{ agenda.raison }}</td>
-                        <td><a href="/profil/{{ agenda.confidental_id }}" class="btn btn-outline-info btn-lg btn-block">Contacter</a>
-                        </td>
-                        <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p class="text-center">Aucun rendez-vous pris</p>
-        {% endif %}
-
-
-
-
-
-        {% if prof %}
-        <h4>
-            Information professeur:
-            <a href="{{ path('app_modifer_prof') }}" class="btn btn-outline-warning ">Modifier mon profil professeur</a>
-        </h4>
-        <div class="row">
-            <p class="col-6">
-                <span class="font-weight-bold"> Adresse de domicile : </span>
-                {{ prof.adresse }}
-            </p>
-            <p class="col-6">
-                <span class="font-weight-bold">Prix pour une heure de cours : </span>
-                {{ prof.prix }} €/h
-            </p>
-        </div>
-            <h5>Mes rendez-vous professeur</h5>
-            {% if agendasProf %}
+    <div class="container-fluid">
+        <div class="mt-1 rounded bg-light" style="padding: 50px">
+            <h2>Mon profil</h2>
+            <h4>
+                Information utilisateur :
+                <a href="{{ path('app_modifer') }}" class="btn btn-outline-warning ">Modifier mon profil utilisateur</a>
+            </h4>
+            <div class="row">
+                <p class="col-4">
+                    <span class="font-weight-bold">Identité :</span>
+                    {% if user.sexe %}
+                        Madame
+                    {% else %}
+                        Monsieur
+                    {% endif %}
+                    {{ user.nom }} {{ user.prenom }}, né le {{ user.birthday|date('Y-m-d') }}
+                </p>
+                <p class="col-4">
+                    <span class="font-weight-bold">Contact :</span>
+                    {{ user.phone }} / {{ app.user.email }}
+                </p>
+                <p class="col-4">
+                    <span class="font-weight-bold">Ville de domicile :</span>
+                    {{ user.ville }}
+                </p>
+            </div>
+            <h5>Mes rendez-vous</h5>
+            {% if agendas %}
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Heure début</th>
                         <th scope="col">Heure fin</th>
-                        <th scope="col">Info élève</th>
+                        <th scope="col">Info professeur</th>
                         <th scope="col">Raison</th>
                         <th scope="col">Accès aux profil</th>
                         <th scope="col">Annuler le rendez vous</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for agenda in agendasProf %}
+                    {% for agenda in agendas %}
                         <tr>
                             <td>{{ agenda.datep }}</td>
                             <td>{{ agenda.debut }}</td>
                             <td>{{ agenda.fin }}</td>
                             {% if agenda.sexe ==0 %}
-                                <td>Mr {{ agenda.nom }} {{ agenda.prenom  }},
+                                <td>Mr {{ agenda.nom }} {{ agenda.prenom }},
                                     né le {{ agenda.birthday|date('Y-m-d') }}
                                     et vit à {{ agenda.ville }}</td>
                             {% else %}
-                                <td>Mme {{ agenda.nom }} {{ agenda.prenom  }},
+                                <td>Mme {{ agenda.nom }} {{ agenda.prenom }},
                                     né le {{ agenda.birthday|date('Y-m-d') }}
                                     et vit à {{ agenda.ville }}</td>
                             {% endif %}
                             <td>{{ agenda.raison }}</td>
                             <td><a href="/profil/{{ agenda.confidental_id }}"
-                                   class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
-                            <td><a href="/remove/agenda/{{ agenda.idAgenda }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                                   class="btn btn-outline-info btn-lg btn-block">Contacter</a>
+                            </td>
+                            <td>
+                                <button data-id="{{ agenda.idAgenda }}" data-type="agenda"
+                                        class="btn btn-outline-danger btn-lg btn-block remove">X
+                                </button>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             {% else %}
-                <p class="text-center">Aucun rendez-vous reçus</p>
+                <p class="text-center">Aucun rendez-vous pris</p>
             {% endif %}
 
 
-            <div class="row">
-            <div class="col-6">
-                <h5>Compétences</h5>
-                <h6>+ Nouvelle Competences</h6>
-                {{ form_start(formComp) }}
-                <div class="form-row ">
-                    <div class="form-group input-group col-md-4">
-                        <label for="">Sélectioner votre nouvelle matière</label><br>
-                        {{ form_widget(formComp.matiere,{'attr': {'class': 'form-control'}}) }}
-                    </div>
-                    <div class="form-group input-group col-md-4">
-                        <label for="">Séléctioner votre niveau de compétence</label><br>
-                        {{ form_widget(formComp.niveau,{'attr': {'class': 'form-control'}}) }}
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="">Sauvegarder la nouvelle matière</label><br>
-                        {{ form_widget(formComp.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
-                    </div>
-                </div>
-                {{ form_end(formComp) }}
 
-                {% if compts %}
+
+
+            {% if prof %}
+                <h4>
+                    Information professeur:
+                    <a href="{{ path('app_modifer_prof') }}" class="btn btn-outline-warning ">Modifier mon profil
+                        professeur</a>
+                </h4>
+                <div class="row">
+                    <p class="col-6">
+                        <span class="font-weight-bold"> Adresse de domicile : </span>
+                        {{ prof.adresse }}
+                    </p>
+                    <p class="col-6">
+                        <span class="font-weight-bold">Prix pour une heure de cours : </span>
+                        {{ prof.prix }} €/h
+                    </p>
+                </div>
+                <h5>Mes rendez-vous professeur</h5>
+                {% if agendasProf %}
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Matière</th>
-                            <th scope="col">Niveau</th>
-                            <th scope="col">Supprimer</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Heure début</th>
+                            <th scope="col">Heure fin</th>
+                            <th scope="col">Info élève</th>
+                            <th scope="col">Raison</th>
+                            <th scope="col">Accès aux profil</th>
+                            <th scope="col">Annuler le rendez vous</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for compt in compts %}
+                        {% for agenda in agendasProf %}
                             <tr>
-                                <td>{{ compt.matiere }}</td>
-                                <td>{{ compt.niveau }}</td>
-                                <td><a href="/remove/competence/{{ compt.competence_id }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <p class="text-center">Aucune Compétences</p>
-                {% endif %}
-
-            </div>
-            <div class="col-6">
-                <h5>Disponibilités (tranche d'une heure)</h5>
-                <h6>+ Nouvelle Disponibilité </h6>
-                {{ form_start(formDispo) }}
-                <div class="form-row ">
-
-                    <div class="form-group input-group col-md-4">
-                        <label for="">Séléctioner l'heure à laquelle commence la disponibilité</label><br>
-                        {{ form_widget(formDispo.debut,{'attr': {'class': 'form-control'}}) }}
-                    </div>
-                    <div class="form-group input-group col-md-4">
-                        <label for="">Sélectioner le jour lié à cette disponibilité</label><br>
-                        {{ form_widget(formDispo.jour,{'attr': {'class': 'form-control'}}) }}
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <label for="">Sauvegarder la nouvelle Disponibilité</label><br>
-                        {{ form_widget(formDispo.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
-                    </div>
-                </div>
-                {{ form_end(formDispo) }}
-                {% if dispos %}
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">Jour</th>
-                            <th scope="col">Début</th>
-                            <th scope="col">Fin</th>
-                            <th scope="col">Suprimmer</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for dispo in dispos %}
-                            <tr>
-                                {% if dispo.jour == 1 %}
-                                    <td>Lundi</td>
-                                {% elseif  dispo.jour == 2%}
-                                    <td>Mardi</td>
-                                {% elseif  dispo.jour == 3%}
-                                    <td>Mercredi</td>
-                                {% elseif  dispo.jour == 4%}
-                                    <td>Jeudi</td>
-                                {% elseif  dispo.jour == 5%}
-                                    <td>Vendredi</td>
-                                {% elseif  dispo.jour == 6%}
-                                    <td>Samedi</td>
+                                <td>{{ agenda.datep }}</td>
+                                <td>{{ agenda.debut }}</td>
+                                <td>{{ agenda.fin }}</td>
+                                {% if agenda.sexe ==0 %}
+                                    <td>Mr {{ agenda.nom }} {{ agenda.prenom }},
+                                        né le {{ agenda.birthday|date('Y-m-d') }}
+                                        et vit à {{ agenda.ville }}</td>
                                 {% else %}
-                                    <td>Dimanche</td>
+                                    <td>Mme {{ agenda.nom }} {{ agenda.prenom }},
+                                        né le {{ agenda.birthday|date('Y-m-d') }}
+                                        et vit à {{ agenda.ville }}</td>
                                 {% endif %}
-                                <td>{{ dispo.debut }}</td>
-                                <td>{{ dispo.fin }}</td>
-                                <td><a href="/remove/disponibilite/{{ dispo.disponibilite_id }}" class="btn btn-outline-danger btn-lg btn-block">X</a></td>
+                                <td>{{ agenda.raison }}</td>
+                                <td><a href="/profil/{{ agenda.confidental_id }}"
+                                       class="btn btn-outline-info btn-lg btn-block">Contacter</a></td>
+                                <td>
+                                    <button data-id="{{ agenda.idAgenda }}" data-type="agendaprof"
+                                            class="btn btn-outline-danger btn-lg btn-block remove">X
+                                    </button>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 {% else %}
-                    <p class="text-center">Aucune disponibilité</p>
+                    <p class="text-center">Aucun rendez-vous reçus</p>
                 {% endif %}
 
-            </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <h5>Compétences</h5>
+                        <h6>+ Nouvelle Competences</h6>
+                        {{ form_start(formComp) }}
+                        <div class="form-row ">
+                            <div class="form-group input-group col-md-4">
+                                <label for="">Sélectioner votre nouvelle matière</label><br>
+                                {{ form_widget(formComp.matiere,{'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="form-group input-group col-md-4">
+                                <label for="">Séléctioner votre niveau de compétence</label><br>
+                                {{ form_widget(formComp.niveau,{'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">Sauvegarder la nouvelle matière</label><br>
+                                {{ form_widget(formComp.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
+                            </div>
+                        </div>
+                        {{ form_end(formComp) }}
+
+                        {% if compts %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Matière</th>
+                                    <th scope="col">Niveau</th>
+                                    <th scope="col">Supprimer</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for compt in compts %}
+                                    <tr>
+                                        <td>{{ compt.matiere }}</td>
+                                        <td>{{ compt.niveau }}</td>
+                                        <td>
+                                            <button data-id="{{ compt.competence_id }}" data-type="competence"
+                                                    class="btn btn-outline-danger btn-lg btn-block remove">X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="text-center">Aucune Compétences</p>
+                        {% endif %}
+
+                    </div>
+                    <div class="col-6">
+                        <h5>Disponibilités (tranche d'une heure)</h5>
+                        <h6>+ Nouvelle Disponibilité </h6>
+                        {{ form_start(formDispo) }}
+                        <div class="form-row ">
+
+                            <div class="form-group input-group col-md-4">
+                                <label for="">Séléctioner l'heure à laquelle commence la disponibilité</label><br>
+                                {{ form_widget(formDispo.debut,{'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="form-group input-group col-md-4">
+                                <label for="">Sélectioner le jour lié à cette disponibilité</label><br>
+                                {{ form_widget(formDispo.jour,{'attr': {'class': 'form-control'}}) }}
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="">Sauvegarder la nouvelle Disponibilité</label><br>
+                                {{ form_widget(formDispo.ajouter,{'attr': {'class': 'form-control btn btn-success '}}) }}
+                            </div>
+                        </div>
+                        {{ form_end(formDispo) }}
+                        {% if dispos %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Jour</th>
+                                    <th scope="col">Début</th>
+                                    <th scope="col">Fin</th>
+                                    <th scope="col">Suprimmer</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for dispo in dispos %}
+                                    <tr>
+                                        {% if dispo.jour == 1 %}
+                                            <td>Lundi</td>
+                                        {% elseif  dispo.jour == 2 %}
+                                            <td>Mardi</td>
+                                        {% elseif  dispo.jour == 3 %}
+                                            <td>Mercredi</td>
+                                        {% elseif  dispo.jour == 4 %}
+                                            <td>Jeudi</td>
+                                        {% elseif  dispo.jour == 5 %}
+                                            <td>Vendredi</td>
+                                        {% elseif  dispo.jour == 6 %}
+                                            <td>Samedi</td>
+                                        {% else %}
+                                            <td>Dimanche</td>
+                                        {% endif %}
+                                        <td>{{ dispo.debut }}</td>
+                                        <td>{{ dispo.fin }}</td>
+                                        <td>
+                                            <button data-id="{{ dispo.disponibilite_id }}" data-type="disponibilite"
+                                                    class="btn btn-outline-danger btn-lg btn-block remove">X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="text-center">Aucune disponibilité</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            {% endif %}
+
         </div>
-
-        {% endif %}
-
     </div>
-</div>
 {% endblock %}

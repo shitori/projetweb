@@ -69,10 +69,13 @@ class MainController extends AbstractController
         if ($data == "agenda"){
             $repository = $this->getDoctrine()->getRepository(Agenda::class);
             $repository->removeAgenda($id,$userData->getId());
-            return $this->redirectToRoute("profil");
         }
         if ($profData == null) {
             return $this->redirectToRoute("home");
+        }
+        if ($data == "agendaprof") {
+            $repository = $this->getDoctrine()->getRepository(Agenda::class);
+            $repository->removeAgendaProf($id, $profData->getId());
         }
         if ($data == "competence") {
             $repository = $this->getDoctrine()->getRepository(Competence::class);

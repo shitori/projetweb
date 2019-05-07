@@ -3,10 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Agenda;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\DBALException;
-use Exception;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -86,6 +84,21 @@ class AgendaRepository extends ServiceEntityRepository
         }
         $stmt->bindValue(1, $idAgenda);
         $stmt->bindValue(2, $idCurrentUser);
+        $stmt->execute();
+        return "Le rendez vous a bien été surprimer";
+    }
+
+    public function removeAgendaProf($idAgenda, $idCurrentProf)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'delete from agenda where id = ? and prof_id = ?';
+        try {
+            $stmt = $conn->prepare($sql);
+        } catch (DBALException $e) {
+        }
+        $stmt->bindValue(1, $idAgenda);
+        $stmt->bindValue(2, $idCurrentProf);
         $stmt->execute();
         return "Le rendez vous a bien été surprimer";
     }

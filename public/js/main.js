@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log("main.js OK")
+    console.log("main.js OK");
     var matiere = [
         "Français",
         "Mathématiques",
@@ -79,7 +79,7 @@ $(document).ready(function () {
     $("input:checkbox").on("change", function () {
         var a = $("input:checkbox:checked").map(function () {
             return $(this).val()
-        }).get()
+        }).get();
         $("#tabela1 tr").hide();
         var cities = $(".city").filter(function () {
             var city = $(this).text(),
@@ -95,4 +95,17 @@ $(document).ready(function () {
             $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+
+    $(".remove").click(function () {
+        var type = $(this).data("type");
+        var id = $(this).data("id");
+        $(this).parent().parent().fadeOut();
+        $.ajax({
+            url: "/remove/" + type + "/" + id,
+        }).done(function () {
+            console.log("supression OK");
+        })
+    });
+
+
 });
