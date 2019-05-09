@@ -99,13 +99,27 @@ $(document).ready(function () {
     $(".remove").click(function () {
         var type = $(this).data("type");
         var id = $(this).data("id");
-        $(this).parent().parent().fadeOut();
+        $(this).parent().parent().fadeOut("fast");
         $.ajax({
             url: "/remove/" + type + "/" + id,
         }).done(function () {
             console.log("supression OK");
+            var str = "";
+            if (type == "agenda" || type == "agendaProf") {
+                str = "Le rendez-vous a bien été supprimé, " +
+                    "cependant il est préférable de prévenir votre correspondant a partir des informations " +
+                    "<a href='" + $(".remove").parent().parent().children().eq(5).children().attr("href") + "'>ici</a>";
+            } else if (type == "competence") {
+                str = "La compétence a bien été supprimer";
+                $(".alert").addClass("alert-success");
+            } else if (type == "disponibilite") {
+                str = "La disponibilité à bien été supprimer a bien été supprimer";
+            }
+            $(".alert").html(str);
+            $(".alert").show("fast").delay(10000);
+            $(".alert").hide("slow");
+
         })
     });
-
 
 });

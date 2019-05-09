@@ -66,9 +66,9 @@ class MainController extends AbstractController
         $userData = $repository1->findOneBy(["confidental" => $user]);
         $repository = $this->getDoctrine()->getRepository(Professeur::class);
         $profData = $repository->findOneBy(["user" => $repository1->findOneBy(["confidental" => $user])]);
-        if ($data == "agenda"){
+        if ($data == "agenda") {
             $repository = $this->getDoctrine()->getRepository(Agenda::class);
-            $repository->removeAgenda($id,$userData->getId());
+            $repository->removeAgenda($id, $userData->getId());
         }
         if ($profData == null) {
             return $this->redirectToRoute("home");
@@ -94,6 +94,7 @@ class MainController extends AbstractController
      */
     public function information($id, Request $request, ObjectManager $manager)
     {
+        $error = "";
         $repository = $this->getDoctrine()->getRepository(Usersecurity::class);
         $confidentialData = $repository->find($id);
         if ($confidentialData == null) {
@@ -163,66 +164,68 @@ class MainController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $userConnect = $this->getUser();
+                if ($userConnect == null) {
+                    return $this->redirectToRoute("app_login");
+                }
                 $repository1 = $this->getDoctrine()->getRepository(Disponibilite::class);
                 $horairePossible = $repository1->findHorairePossible(
                     $profData->getId(), $addAgenda->debut, $addAgenda->jour);
 
                 if (sizeof($horairePossible) == 0) {
-                    return $this->redirectToRoute("information", ["id" => $id]);
-                }
+                    //return $this->redirectToRoute("information", ["id" => $id]);
+                    $error = 'Horaire indisponible, regarder les disponibilités du professeur';
+                } else {
+                    $repository1 = $this->getDoctrine()->getRepository(User::class);
+                    $userConnectData = $repository1->findOneBy(["confidental" => $userConnect]);
+                    $today = 0;
+                    switch (date('l')) {
+                        case "Monday":
+                            $today = 1;
+                            break;
+                        case "Tuesday":
+                            $today = 2;
+                            break;
+                        case "Wednesday":
+                            $today = 3;
+                            break;
+                        case "Thursday":
+                            $today = 4;
+                            break;
+                        case "Friday":
+                            $today = 5;
+                            break;
+                        case "Saturday":
+                            $today = 6;
+                            break;
+                        case "Sunday":
+                            $today = 7;
+                            break;
+                    }
+                    $ope = intval($addAgenda->jour) + intval($addAgenda->date) - $today;
+                    $operation = '+' . $ope . 'days';
+                    $date = date('Y-m-d', strtotime($operation));
+                    $repository1 = $this->getDoctrine()->getRepository(Agenda::class);
+                    $horairePris = $repository1->noPlace($date, $addAgenda->debut, $profData->getId());
 
-                if ($userConnect == null) {
-                    return $this->redirectToRoute("app_login");
+                    if (sizeof($horairePris) > 0) {
+                        $error = 'Horaire déja pris par un autre utilisateur';
+                        //return $this->redirectToRoute("information", ["id" => $id]);
+                    } else {
+                        $dt = new DateTime($addAgenda->debut);
+                        $dt_bis = new DateTime($addAgenda->debut);
+                        $agenda = new Agenda();
+                        $agenda->setDatep(new DateTime($date));
+                        $agenda->setDebut($dt_bis);
+                        $agenda->setFin($dt->modify('+ 1 hour'));
+                        $agenda->setRaison($addAgenda->motif);
+                        $agenda->setUser($userConnectData);
+                        $agenda->setProf($profData);
+                        $agenda->setJour($addAgenda->jour);
+                        $manager->persist($agenda);
+                        $manager->flush();
+                        return $this->redirectToRoute("profil");
+                    }
                 }
-
-                $repository1 = $this->getDoctrine()->getRepository(User::class);
-                $userConnectData = $repository1->findOneBy(["confidental" => $userConnect]);
-                $today = 0;
-                switch (date('l')) {
-                    case "Monday":
-                        $today = 1;
-                        break;
-                    case "Tuesday":
-                        $today = 2;
-                        break;
-                    case "Wednesday":
-                        $today = 3;
-                        break;
-                    case "Thursday":
-                        $today = 4;
-                        break;
-                    case "Friday":
-                        $today = 5;
-                        break;
-                    case "Saturday":
-                        $today = 6;
-                        break;
-                    case "Sunday":
-                        $today = 7;
-                        break;
-                }
-                $ope = intval($addAgenda->jour) + intval($addAgenda->date) - $today;
-                $operation = '+' . $ope . 'days';
-                $date = date('Y-m-d', strtotime($operation));
-                $repository1 = $this->getDoctrine()->getRepository(Agenda::class);
-                $horairePris = $repository1->noPlace($date, $addAgenda->debut, $profData->getId());
-
-                if (sizeof($horairePris) > 0) {
-                    return $this->redirectToRoute("information", ["id" => $id]);
-                }
-                $dt = new DateTime($addAgenda->debut);
-                $dt_bis = new DateTime($addAgenda->debut);
-                $agenda = new Agenda();
-                $agenda->setDatep(new DateTime($date));
-                $agenda->setDebut($dt_bis);
-                $agenda->setFin($dt->modify('+ 1 hour'));
-                $agenda->setRaison($addAgenda->motif);
-                $agenda->setUser($userConnectData);
-                $agenda->setProf($profData);
-                $agenda->setJour($addAgenda->jour);
-                $manager->persist($agenda);
-                $manager->flush();
-                return $this->redirectToRoute("profil");
             }
         }
         if ($form && sizeof($allprofDispo) > 0 && sizeof($allprofDispoDay) > 0) {
@@ -233,7 +236,8 @@ class MainController extends AbstractController
                     "compts" => $competenceData,
                     "dispos" => $dispoData,
                     "confidential" => $confidentialData,
-                    "form" => $form->createView()));
+                    "form" => $form->createView(),
+                    "error" => $error));
         }
         return $this->render('main/information.html.twig',
             array("user" => $userData,
@@ -242,7 +246,8 @@ class MainController extends AbstractController
                 "compts" => $competenceData,
                 "dispos" => $dispoData,
                 "confidential" => $confidentialData,
-                "form" => $form));
+                "form" => $form,
+                "error" => $error));
     }
 
 
@@ -345,6 +350,7 @@ class MainController extends AbstractController
             $repository->insertDispo($addDispo->jour, $addDispo->debut, $profData->getId());
             return $this->redirectToRoute("profil");
         }
+
         return $this->render('main/profil.html.twig',
             array("user" => $userData,
                 "prof" => $profData,

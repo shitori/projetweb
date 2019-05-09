@@ -2,6 +2,9 @@
 {% block title %}EduCours - Profil{% endblock %}
 
 {% block body %}
+    {% if error != "" %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
     <div class="container-fluid">
         <div class="mt-1 rounded bg-light" style="padding: 50px">
             <h2>Profil</h2>

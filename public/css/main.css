@@ -1,6 +1,6 @@
 .fond-image{
     background-image: url("../img/bg.jpg");
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
     background-size: cover;
 
 }
