@@ -108,7 +108,7 @@ $(document).ready(function () {
             if (type == "agenda" || type == "agendaProf") {
                 str = "Le rendez-vous a bien été supprimé, " +
                     "cependant il est préférable de prévenir votre correspondant a partir des informations " +
-                    "<a href='" + $(".remove").parent().parent().children().eq(5).children().attr("href") + "'>ici</a>";
+                    "<a href='" + $(".remove").parent().parent().children().eq(5).children().attr("href") + "'>suivante</a>";
             } else if (type == "competence") {
                 str = "La compétence a bien été supprimer";
                 $(".alert").addClass("alert-success");

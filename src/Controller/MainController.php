@@ -350,7 +350,7 @@ class MainController extends AbstractController
             $repository->insertDispo($addDispo->jour, $addDispo->debut, $profData->getId());
             return $this->redirectToRoute("profil");
         }
-
+        dump($agendaData, $agendaDataProf);
         return $this->render('main/profil.html.twig',
             array("user" => $userData,
                 "prof" => $profData,

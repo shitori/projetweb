@@ -27,7 +27,7 @@ class AgendaRepository extends ServiceEntityRepository
         $sql = 'select *,agenda.id as idAgenda from agenda
                 join professeur p on agenda.prof_id = p.id
                 join user u on p.user_id = u.id
-                where agenda.user_id = ?';
+                where agenda.user_id = ? order by datep,debut';
         try {
             $stmt = $conn->prepare($sql);
         } catch (DBALException $e) {
@@ -44,7 +44,7 @@ class AgendaRepository extends ServiceEntityRepository
         $sql = 'select *,agenda.id as idAgenda from agenda
                 join professeur p on agenda.prof_id = p.id
                 join user u on agenda.user_id = u.id
-                where p.id = ?';
+                where p.id = ? order by datep,debut';
         try {
             $stmt = $conn->prepare($sql);
         } catch (DBALException $e) {
