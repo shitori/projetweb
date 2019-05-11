@@ -108,7 +108,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                {% for i in range(8, 20) %}
+                                {% for i in range(8, 19) %}
                                     <th scope="col">{{ i }}h - {{ i+1 }}h</th>
                                 {% endfor %}
                             </tr>
@@ -130,7 +130,7 @@
                                     {% else %}
                                         <th>Dimanche</th>
                                     {% endif %}
-                                    {% for j in range(8, 20) %}
+                                    {% for j in range(8, 19) %}
                                         {% set rempli = false %}
                                         {% for dispo in dispos %}
                                             {% if j>=10 %}
