@@ -4,6 +4,11 @@
 {% block body %}
     <div class="container-fluid">
         <div class="mt-1 rounded bg-light" style="padding: 50px">
+            <a href="/">
+                <h3>
+                    + Nouvelle recherche
+                </h3>
+            </a>
             <h2>
                 Liste de tous les professeur / Matière : {{ matiere }} / Ville : {{ ville }}
             </h2>
@@ -73,7 +78,8 @@
                                     {% endif %}
                                     <h5 class="card-title">{{ prof.nom }} {{ prof.prenom }}</h5>
                                     <p class="card-text">{{ prof.adresse }} - {{ prof.ville }}</p>
-                                    <a href="/profil/{{ prof.confidental_id }}" class="btn btn-primary">Prendre rendez-vous</a>
+                                    <a href="/profil/{{ prof.confidental_id }}" class="btn btn-primary">Prendre
+                                        rendez-vous</a>
                                 </div>
                                 <div class="card-footer text-muted system" data-price="{{ prof.prix }}">
                                     {{ prof.prix }} €/heure

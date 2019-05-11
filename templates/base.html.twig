@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}projet_web - dev{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
             <link href="{{ asset('css/main.css') }}" rel="stylesheet" />
@@ -11,7 +11,7 @@
     </head>
     <body class="fond-image">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/"><img src="{{ asset('img/logo.png') }}" style="width: 150px"
+            <a class="navbar-brand" href="/"><img src="{{ asset('img/logo.png') }}" style="width: 100px"
                                                   alt="logo_site"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -57,5 +57,14 @@
             <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
             <script src="{{ asset('js/main.js') }}"></script>
         {% endblock %}
+
     </body>
+    <footer class="page-footer font-small bg-dark text-white fixed-bottom ">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center ">© 2019 Copyright : Chawki CHOUIB & Antony FOURCHAULT
+        </div>
+        <!-- Copyright -->
+
+    </footer>
 </html>

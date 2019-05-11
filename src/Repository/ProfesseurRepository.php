@@ -22,6 +22,13 @@ class ProfesseurRepository extends ServiceEntityRepository
 
     public function allProfFilter($matiere, $ville)
     {
+        if ($matiere == "Toutes") {
+            $matiere = "";
+        }
+        if ($ville == "Toutes") {
+            $ville = "";
+        }
+
         $conn = $this->getEntityManager()->getConnection();
         if ($matiere == "" && $ville == "") {
             $sql = 'select * from professeur

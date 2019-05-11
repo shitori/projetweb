@@ -34,6 +34,7 @@ class MainController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $repository = $this->getDoctrine()->getRepository(Professeur::class);
+
             $profs = $repository->allProfFilter($tab->inputMat, $tab->inputCity);
             return $this->render('main/search.html.twig',
                 array('profs' => $profs, 'matiere' => $tab->inputMat, 'ville' => $tab->inputCity));
