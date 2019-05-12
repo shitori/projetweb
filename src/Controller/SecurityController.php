@@ -140,7 +140,7 @@ class SecurityController extends AbstractController
             $repository = $this->getDoctrine()->getRepository(Usersecurity::class);
             if (filter_var($data->inputEmail, FILTER_VALIDATE_EMAIL)
                 && $data->inputPass == $data->inputPassConfirm
-                && $repository->findOneBy(["email" => $data->inputEmail] == null)) {
+                && $repository->findOneBy(["email" => $data->inputEmail]) == null) {
                 $usersecurity->setEmail($data->inputEmail);
                 $usersecurity->setPassword($data->inputPass);
                 $hash = $encoder->encodePassword($usersecurity, $usersecurity->getPassword());

@@ -96,15 +96,12 @@ $(document).ready(function () {
 
             $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
-        $(".card-text").filter(function () {
-
-            $(this).parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
     });
 
     $(".remove").click(function () {
         var type = $(this).data("type");
         var id = $(this).data("id");
+        var contact = $(this).parent().parent().children().eq(5).children().attr("href");
         $(this).parent().parent().fadeOut("fast");
         $.ajax({
             url: "/remove/" + type + "/" + id,
@@ -115,7 +112,7 @@ $(document).ready(function () {
             if (type == "agenda" || type == "agendaprof") {
                 str = "Le rendez-vous a bien été supprimé, " +
                     "cependant il est préférable de prévenir votre correspondant a partir des informations " +
-                    "<a href='" + $(".remove").parent().parent().children().eq(5).children().attr("href") + "'>suivante</a>";
+                    "<a href='" + contact + "'>suivante</a>";
             } else if (type == "competence") {
                 str = "La compétence a bien été supprimer";
             } else if (type == "disponibilite") {
